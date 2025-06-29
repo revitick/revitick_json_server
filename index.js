@@ -32,14 +32,32 @@ app.post('/api/upload-json', async (req, res) => {
             };
 
             for (const item of group.results || []) {
-                flatData.push({
-                    ...meta,
-                    stair_id: item.StairId,
-                    run_name: item.RunName,
-                    width_mm: item.WidthMm,
-                    compliant: item.Compliant
-                });
+                if (group.type === 'stair_width') {
+                    flatData.push({
+                        ...meta,
+                        stair_id: item.StairId,
+                        run_name: item.RunName,
+                        width_mm: item.WidthMm,
+                        compliant: item.Compliant
+                    });
+
+                } else if (group.type === 'stair_headroom') {
+                    console.log("🔍 RAW item:", item);  // <<<< 睇清楚實際內容
+
+                    const row = {
+                        ...meta,
+                        stair_id: item.StairId,
+                        run_name: item.RunName,
+                        min_headroom_mm: item.MinHeadroomMm,
+                        compliant: item.Compliant
+                    };
+
+                    console.log("📤 headroom row:", row);
+
+                    flatData.push(row);
+                }
             }
+
         }
 
         // 👉 Send to Supabase if available

@@ -40,21 +40,14 @@ app.post('/api/upload-json', async (req, res) => {
                         width_mm: item.WidthMm,
                         compliant: item.Compliant
                     });
-
                 } else if (group.type === 'stair_headroom') {
-                    console.log("🔍 RAW item:", item);  // <<<< 睇清楚實際內容
-
-                    const row = {
+                    flatData.push({
                         ...meta,
                         stair_id: item.StairId,
                         run_name: item.RunName,
                         min_headroom_mm: item.MinHeadroomMm,
                         compliant: item.Compliant
-                    };
-
-                    console.log("📤 headroom row:", row);
-
-                    flatData.push(row);
+                    });
                 }
             }
 
